@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { EnterInput } from "../components/enterInput";
 import { app, useUserContext } from "../contexts";
@@ -26,7 +27,6 @@ export function Enter() {
       const result = await app
         .post("/user/login", { email, password })
         .then((result) => result.data);
-      console.log(result);
       handleToken(result);
     } catch (error: any) {
       Alert.alert("ERRO AO REALIZAR LOGIN", error.response.data.msg);
@@ -38,7 +38,6 @@ export function Enter() {
       const result = await app
         .post("/user/register", { name, email, password })
         .then((result) => result.data);
-      console.log(result);
       handleToken(result);
     } catch (error: any) {
       Alert.alert("ERRO AO REALIZAR SEU REGISTRO", error.response.data.msg);
@@ -50,7 +49,8 @@ export function Enter() {
       .get(`/user/decode/${token}`)
       .then((result) => result.data);
     setUser(result);
-    navigation.navigate("Chats");
+    await AsyncStorage.setItem("user", JSON.stringify(result));
+    navigation.navigate("Chats" as never);
   };
 
   return (
