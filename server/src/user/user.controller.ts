@@ -50,8 +50,7 @@ export class UserController {
 
     if (!this.checkPassword(loginUserDto.password, user.password))
       return res.status(400).send({ msg: "Senha incorreta" });
-
-    await this.socket
+    
     return res.status(200).send(this.encode(user.email));
   }
 
