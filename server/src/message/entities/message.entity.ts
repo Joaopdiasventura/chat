@@ -1,7 +1,7 @@
 export class Message {
   id: string;
   content: string;
-  from: string;
-  to: string;
+  user: string;
+  chat: string;
   sendAt: Date;
 }

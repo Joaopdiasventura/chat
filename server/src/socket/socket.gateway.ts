@@ -1,40 +1,32 @@
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { Message } from "src/message/entities/message.entity";
 
 @WebSocketGateway()
-export class SocketGateway {
+export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
   private users: Map<string, string> = new Map();
 
-  @SubscribeMessage("message")
-  async handleMessage(@MessageBody() payload: Message) {
-    const recipientSocketId = this.getUserSocketId(payload.to);
+  @SubscribeMessage("enter")
+  async handleMessage(@MessageBody() payload: Message, to: string) {
+    const recipientSocketId = this.getUserSocketId(to);
     if (recipientSocketId) {
       this.server
         .to(recipientSocketId)
         .emit("message", JSON.stringify(payload));
     } else {
-      console.log(`User with email ${payload.to} is not connected.`);
+      console.log(`Usuário com o email: ${to} não está conectado`);
     }
-  }
-
-  @SubscribeMessage("enter")
-  handleEnter(client: Socket, payload: { email: string }): string {
-    const { email } = payload;
-    this.users.set(client.id, email);
-    this.server.emit(
-      "userEntered",
-      JSON.stringify({ msg: "Usuário entrou com sucesso" }),
-    );
-    return `User with email ${email} has logged in.`;
   }
 
   private getUserSocketId(email: string): string | undefined {
@@ -44,5 +36,37 @@ export class SocketGateway {
       }
     }
     return undefined;
+  }
+
+  @SubscribeMessage("enter")
+  handleEnter(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: { email: string },
+  ): string {
+    const { email } = payload;
+    this.users.set(client.id, email);
+    this.server.emit(
+      "userEntered",
+      JSON.stringify({ msg: "Usuário entrou com sucesso" }),
+    );
+    return `Usuário com o email: ${email}, entrou`;
+  }
+
+  handleConnection(client: Socket) {
+    console.log(`Client connected: ${client.id}`);
+  }
+
+  handleDisconnect(client: Socket) {
+    console.log(`Client disconnected: ${client.id}`);
+    this.users.delete(client.id);
+  }
+
+  handleClientConnection(client: Socket, email: string) {
+    const payload = { email };
+    this.handleEnter(client, payload);
+  }
+
+  getClientById(clientId: string): Socket | undefined {
+    return this.server.sockets.sockets.get(clientId);
   }
 }

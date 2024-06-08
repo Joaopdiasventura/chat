@@ -1,5 +1,6 @@
 export class CreateMessageDto {
-  from: string;
-  to: string;
+  user: string;
+  user_?: string;
+  chat: string;
   content: string;
 }

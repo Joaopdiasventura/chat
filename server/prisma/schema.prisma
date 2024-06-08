@@ -8,15 +8,40 @@ datasource db {
 }
 
 model User {
-  email    String @id @map("_id")
-  name     String
-  password String
+  email     String     @id @map("_id")
+  name      String
+  password  String
+  messages  Message[]
+  chatUsers ChatUser[]
+}
+
+model Chat {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  messages  Message[]
+  chatUsers ChatUser[]
+}
+
+model ChatUser {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  user      String @map("fk_user_email")
+  chat      String @map("fk_chat_id") @db.ObjectId
+  userEmail User   @relation(fields: [user], references: [email], onDelete: Cascade)
+  chatId    Chat   @relation(fields: [chat], references: [id], onDelete: Cascade)
+
+  @@index([user])
+  @@index([chat])
 }
 
 model Message {
-  id      String @id @map("_id") @db.ObjectId @default(auto())
-  content String
-  from    String
-  to      String
-  sendAt  DateTime @map("send_at") @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  user      String   @map("fk_user_email")
+  chat      String   @map("fk_chat_id") @db.ObjectId
+  sendAt    DateTime @default(now()) @map("send_at")
+  userEmail User     @relation(fields: [user], references: [email], onDelete: Cascade)
+  chatId    Chat     @relation(fields: [chat], references: [id], onDelete: Cascade)
+
+  @@index([user])
+  @@index([chat])
+  @@index([sendAt])
 }
