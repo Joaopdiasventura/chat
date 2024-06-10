@@ -37,7 +37,7 @@ export function ChatComponent(props: chatProps) {
 
   return (
     <View
-      className="border p-1.5 rounded-md"
+      className="border my-1.5 p-1.5 rounded-md"
       key={email}
       onTouchStart={SetChat}
     >

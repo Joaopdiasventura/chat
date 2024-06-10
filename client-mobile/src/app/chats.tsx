@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { app, useUserContext } from "../contexts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ChatComponent } from "../components/chat";
 import { useNavigation } from "@react-navigation/native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export function Chats() {
   const { navigate } = useNavigation();
@@ -17,19 +18,25 @@ export function Chats() {
       if (userJson) {
         setUser(JSON.parse(userJson));
       } else {
-        navigate("Chats" as never);
+        navigate("Enter" as never);
       }
     }
   };
 
   const getData = async () => {
-    const email = user?.email;
-    const result = await app
-      .get("/chat/firsts/" + email)
-      .then((result) => result.data);
-    console.log(result);
-    setChats(result);
-    console.log(chats[0].messages[0].chat);
+    console.log(user);
+    if (user) {
+      const { email } = user;
+      const result = await app
+        .get("/chat/firsts/" + email)
+        .then((result) => result.data);
+      setChats(result);
+      console.log(result);
+    }
+  };
+
+  const newChat = () => {
+    navigate("AddChat" as never);
   };
 
   useEffect(() => {
@@ -39,6 +46,17 @@ export function Chats() {
 
   return (
     <View className="flex-1 bg-white p-3">
+      <TouchableOpacity
+        onPress={newChat}
+        className="flex flex-row justify-between items-center border rounded-md p-1.5"
+      >
+        <View className="">
+          <Text className="font-black color-red-600">Adicionar Conversa</Text>
+        </View>
+        <View className="bg-red-600 rounded-full">
+          <Ionicons name="add" color="white" size={25} />
+        </View>
+      </TouchableOpacity>
       {chats.map((chat) => (
         <ChatComponent {...chat} />
       ))}

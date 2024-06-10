@@ -4,6 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Chat } from "./chat";
 import { Chats } from "./chats";
 import { Enter } from "./enter";
+import { AddChat } from "./addChat";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +36,9 @@ export function Screens() {
         tabBarStyle: {
           backgroundColor: "#fff",
           paddingBottom: 5,
-          height: 60,
+          height: 40,
+          display: "flex",
+          alignContent: "center",
         },
       })}
     >
@@ -44,6 +47,13 @@ export function Screens() {
       <Tab.Screen
         name="Chat"
         component={Chat}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="AddChat"
+        component={AddChat}
         options={{
           tabBarButton: () => null,
         }}
