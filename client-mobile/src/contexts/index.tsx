@@ -22,7 +22,7 @@ interface UserContextType {
 }
 
 export const app = axios.create({
-  baseURL: "https://tcc-kessyane.onrender.com",
+  baseURL: "https://chat-fqe8.onrender.com",
 });
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -42,5 +42,30 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
+  );
+};
+
+interface ChatContextType {
+  chat: string | null;
+  setChat: Dispatch<SetStateAction<string | null>>;
+}
+
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
+
+export const useChatContext = () => {
+  const chat = useContext(ChatContext);
+  if (!chat) {
+    throw new Error("chatContext must be used within a RequestProvider");
+  }
+  return chat;
+};
+
+export const ChatProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [chat, setChat] = useState<string | null>(null);
+
+  return (
+    <ChatContext.Provider value={{ chat, setChat }}>
+      {children}
+    </ChatContext.Provider>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -6,8 +6,8 @@ import { EnterInput } from "../components/enterInput";
 import { app, useUserContext } from "../contexts";
 
 export function Enter() {
-  const navigation = useNavigation();
-  const { setUser } = useUserContext();
+  const { navigate } = useNavigation();
+  const { user, setUser } = useUserContext();
 
   const [login, setLogin] = useState<boolean>(true);
   const [name, setName] = useState("");
@@ -24,11 +24,13 @@ export function Enter() {
 
   const handleLogin = async () => {
     try {
-      const result = await app
+      const { token } = await app
         .post("/user/login", { email, password })
         .then((result) => result.data);
-      handleToken(result);
+      handleToken(token);
     } catch (error: any) {
+      console.log(error);
+
       Alert.alert("ERRO AO REALIZAR LOGIN", error.response.data.msg);
     }
   };
@@ -50,7 +52,7 @@ export function Enter() {
       .then((result) => result.data);
     setUser(result);
     await AsyncStorage.setItem("user", JSON.stringify(result));
-    navigation.navigate("Chats" as never);
+    navigate("Chats" as never);
   };
 
   return (
