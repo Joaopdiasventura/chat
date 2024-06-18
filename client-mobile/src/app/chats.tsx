@@ -31,7 +31,6 @@ export function Chats() {
         .get("/chat/firsts/" + email)
         .then((result) => result.data);
       setChats(result);
-      console.log(result);
     }
   };
 
@@ -42,7 +41,7 @@ export function Chats() {
   useEffect(() => {
     getUser();
     getData();
-  }, []);
+  }, [chats]);
 
   return (
     <View className="flex-1 bg-white p-3">

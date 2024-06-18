@@ -51,7 +51,11 @@ export function Chat() {
         ))}
       </ScrollView>
       <View className="flex flex-row justify-between items-center border p-1.5 rounded-lg">
-        <TextInput onChangeText={(text) => setMessage(text)} value={message} />
+        <TextInput
+          onChangeText={(text) => setMessage(text)}
+          value={message}
+          placeholder="Digite sua mensagem..."
+        />
         <TouchableOpacity onPress={sendMessage}>
           <Ionicons name="play" color="red" size={20} />
         </TouchableOpacity>
