@@ -22,24 +22,24 @@ model Chat {
 }
 
 model ChatUser {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  user      String @map("fk_user_email")
-  chat      String @map("fk_chat_id") @db.ObjectId
-  userEmail User   @relation(fields: [user], references: [email], onDelete: Cascade)
-  chatId    Chat   @relation(fields: [chat], references: [id], onDelete: Cascade)
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  user String @map("fk_user_email")
+  chat String @map("fk_chat_id") @db.ObjectId
+  User User   @relation(fields: [user], references: [email], onDelete: Cascade)
+  Chat Chat   @relation(fields: [chat], references: [id], onDelete: Cascade)
 
   @@index([user])
   @@index([chat])
 }
 
 model Message {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  user      String   @map("fk_user_email")
-  chat      String   @map("fk_chat_id") @db.ObjectId
-  sendAt    DateTime @default(now()) @map("send_at")
-  userEmail User     @relation(fields: [user], references: [email], onDelete: Cascade)
-  chatId    Chat     @relation(fields: [chat], references: [id], onDelete: Cascade)
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+  user    String   @map("fk_user_email")
+  chat    String   @map("fk_chat_id") @db.ObjectId
+  sendAt  DateTime @default(now()) @map("send_at")
+  User    User     @relation(fields: [user], references: [email], onDelete: Cascade)
+  Chat    Chat     @relation(fields: [chat], references: [id], onDelete: Cascade)
 
   @@index([user])
   @@index([chat])

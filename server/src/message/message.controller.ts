@@ -28,9 +28,9 @@ export class MessageController {
         .status(400)
         .send({ msg: "Esse usuário não está cadastrado no sistema" });
 
-    const chat = await this.chatService.findOne(createMessageDto.chat);
+    const chat = await this.chatService.findChat(createMessageDto.chat);
 
-    if (!chat || createMessageDto.chat == "6664bb605ef3e53c185eb42b") {
+    if (!chat) {
       const newChat = await this.chatService.create();
 
       createMessageDto.chat = newChat.id;

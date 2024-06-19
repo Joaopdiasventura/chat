@@ -15,6 +15,9 @@ export class MessageService {
       where: {
         chat,
       },
+      include: {
+        User: true
+      }
     });
   }
 }
