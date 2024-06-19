@@ -9,8 +9,7 @@ export class UserService {
 
   async findUser(email: string): Promise<User | void> {
     const user = await this.prisma.user.findUnique({
-      where: { email },
-      select: { name: true, email: true },
+      where: { email }
     });
     return user ? user : null;
   }
