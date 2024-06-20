@@ -1,15 +1,15 @@
 FROM node:20.12.2
 
+RUN npm install -g yarn
+
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN yarn build
 
 COPY . .
 
-RUN npm run build
-
 EXPOSE 10000
 
-CMD ["npm", "run", "start:prod"]
+CMD ["yarn", "start:prod"]
