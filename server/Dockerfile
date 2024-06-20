@@ -1,7 +1,5 @@
 FROM node:20.12.2
 
-RUN npm install -g yarn
-
 WORKDIR /app
 
 COPY package*.json ./
