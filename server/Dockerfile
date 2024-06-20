@@ -4,9 +4,13 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN yarn build
+RUN yarn install
 
 COPY . .
+
+RUN ls -la /app/tsconfig.json
+
+RUN yarn build
 
 EXPOSE 10000
 
