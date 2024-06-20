@@ -37,7 +37,7 @@ export function MessageComponent(props: Message) {
 
 function UserMssage(props: Message) {
   return (
-    <View className="bg-red-600 my-1 p-1 border rounded-tl-lg rounded-br-lg rounded-bl-lg">
+    <View className="bg-red-600 my-1 p-1 border border-white rounded-tl-lg rounded-br-lg rounded-bl-lg">
       <Text className="text-white">{props.content}</Text>
       <Text className="text-white text-right">{formatDate(props.sendAt)}</Text>
     </View>
@@ -46,7 +46,7 @@ function UserMssage(props: Message) {
 
 function FriendMessage(props: Message) {
   return (
-    <View className="bg-white my-1 p-1 border rounded-tr-lg rounded-br-lg rounded-bl-lg">
+    <View className="bg-white my-1 p-1 border border-red-700 rounded-tr-lg rounded-br-lg rounded-bl-lg">
       <Text className="text-red-600">{props.content}</Text>
       <Text className="text-red-600">{formatDate(props.sendAt)}</Text>
     </View>

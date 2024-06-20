@@ -34,11 +34,14 @@ export function Screens() {
         tabBarActiveTintColor: "red",
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: "#fff",
+          backgroundColor: "#000",
           paddingBottom: 5,
-          height: 40,
+          height: 35,
           display: "flex",
           alignContent: "center",
+          justifyContent: "space-between",
+          borderColor: "#000",
+          marginTop: 15
         },
       })}
     >

@@ -22,7 +22,7 @@ interface UserContextType {
 }
 
 export const app = axios.create({
-  baseURL: "https://chat-fqe8.onrender.com",
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

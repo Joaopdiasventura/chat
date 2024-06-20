@@ -15,23 +15,20 @@ export function AddChat() {
   const [receiver, setReceiver] = useState<string>("");
 
   const sendMessage = async () => {
-    let chat;
-    try {
-      chat = await app
-        .post("/chat", { user, user_: receiver })
-        .then((result) => result.data);
-      setChat(chat.id);
-    } catch (error) {
-      console.log(error);
-    }
     if (message.length > 0) {
-      const body = { content: message, chat: chat.id, user: user?.email };
+      const body = {
+        content: message,
+        chat: "6664bb605ef3e53c185eb42b",
+        user: user?.email,
+        user_: receiver,
+      };
       try {
         const result = await app
           .post("/message", body)
           .then((result) => result.data);
         setMessages([...messages, result]);
         setMessage("");
+        setChat(result.chat);
         navigate("Chat" as never);
       } catch (error) {
         console.log(error);
@@ -40,7 +37,7 @@ export function AddChat() {
   };
 
   return (
-    <View className="flex-1 w-screen h-screen bg-white px-3 m-0 py-0 flex flex-col justify-between items-center">
+    <View className="flex-1 w-screen h-screen bg-black px-3 m-0 py-0 flex flex-col justify-between items-center">
       <View className="flex flex-row justify-between items-center border p-1.5 rounded-lg mb-4 w-full">
         <TextInput
           onChangeText={(text) => setReceiver(text)}

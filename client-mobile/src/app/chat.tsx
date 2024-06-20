@@ -10,7 +10,7 @@ export function Chat() {
   const { user } = useUserContext();
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const scrollViewRef = useRef<ScrollView>(null); // Criando a ref para o ScrollView
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const getData = async () => {
     const result = await app
@@ -37,10 +37,10 @@ export function Chat() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [chat, user]);
 
   return (
-    <View className="flex-1 h-screen bg-white px-3 m-0 py-0">
+    <View className="flex-1 h-screen bg-black px-3 m-0 py-0">
       <ScrollView className="flex h-90 overflow-auto" ref={scrollViewRef}>
         {messages.map((message) => (
           <MessageComponent
@@ -50,11 +50,11 @@ export function Chat() {
           />
         ))}
       </ScrollView>
-      <View className="flex flex-row justify-between items-center border p-1.5 rounded-lg">
+      <View className="flex flex-row justify-between items-center border p-1.5 rounded-lg border-white">
         <TextInput
           onChangeText={(text) => setMessage(text)}
           value={message}
-          placeholder="Digite sua mensagem..."
+          className="text-white w-5/6"
         />
         <TouchableOpacity onPress={sendMessage}>
           <Ionicons name="play" color="red" size={20} />

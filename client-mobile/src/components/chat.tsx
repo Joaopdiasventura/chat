@@ -4,20 +4,17 @@ import { useChatContext } from "../contexts";
 import { useNavigation } from "@react-navigation/native";
 
 interface chatProps {
-  name: string;
-  email: string;
-  messages: any[];
+  content: string;
+  sendAt: Date;
+  chat: string;
+  User: { name: string; email: string };
 }
 
 export function ChatComponent(props: chatProps) {
-  const { email, name, messages } = props;
-
   const { navigate } = useNavigation();
-  const { setChat } = useChatContext();
+  const { chat, setChat } = useChatContext();
 
-  const dateString = messages[messages.length - 1].sendAt;
-
-  const date = new Date(dateString);
+  const date = new Date(props.sendAt);
 
   const formatedDate =
     ("0" + date.getDate()).slice(-2) +
@@ -31,23 +28,25 @@ export function ChatComponent(props: chatProps) {
     ("0" + date.getMinutes()).slice(-2);
 
   const SetChat = () => {
-    setChat(messages[0].chat);
+    setChat(props.chat);
+    console.log(chat);
+
     navigate("Chat" as never);
   };
 
   return (
     <View
-      className="border my-1.5 p-1.5 rounded-md"
-      key={email}
+      className="border my-1.5 p-1.5 rounded-md border-white"
+      key={`${props.sendAt}-${props.User.email}`}
       onTouchStart={SetChat}
     >
       <View className="flex-row gap-1.5 mb-1">
-        <Text className="font-black color-red-600">{name}</Text>
-        <Text className="color-zinc-600">{email}</Text>
+        <Text className="font-black text-red-600">{props.User.name}</Text>
+        <Text className="text-zinc-400">{props.User.email}</Text>
       </View>
       <View className="flex-row justify-between w-full px-1">
-        <Text>{messages[0].content}</Text>
-        <Text>{formatedDate}</Text>
+        <Text className="text-white">{props.content}</Text>
+        <Text className="text-white">{formatedDate}</Text>
       </View>
     </View>
   );

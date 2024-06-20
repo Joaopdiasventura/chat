@@ -31,6 +31,8 @@ export function Chats() {
         .get("/chat/firsts/" + email)
         .then((result) => result.data);
       setChats(result);
+    } else {
+      navigate("Enter" as never);
     }
   };
 
@@ -41,10 +43,10 @@ export function Chats() {
   useEffect(() => {
     getUser();
     getData();
-  }, [chats]);
+  }, [user, chats]);
 
   return (
-    <View className="flex-1 bg-white p-3">
+    <View className="flex-1 bg-black p-3">
       <TouchableOpacity
         onPress={newChat}
         className="flex flex-row justify-between items-center border rounded-md p-1.5"
