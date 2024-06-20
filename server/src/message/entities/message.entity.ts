@@ -5,6 +5,6 @@ export class Message {
   content: string;
   user: string;
   chat: string;
-  sendAt: Date
-  User?: User
+  sendAt: Date;
+  User?: User;
 }

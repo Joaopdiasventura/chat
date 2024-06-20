@@ -16,8 +16,8 @@ export class MessageService {
         chat,
       },
       include: {
-        User: true
-      }
+        User: true,
+      },
     });
   }
 }
