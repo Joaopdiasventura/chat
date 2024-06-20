@@ -38,18 +38,18 @@ export function AddChat() {
 
   return (
     <View className="flex-1 w-screen h-screen bg-black px-3 m-0 py-0 flex flex-col justify-between items-center">
-      <View className="flex flex-row justify-between items-center border p-1.5 rounded-lg mb-4 w-full">
+      <View className="flex flex-row mt-1 first-line:border-zinc-600 justify-between items-center border p-1.5 rounded-lg mb-4 w-full">
         <TextInput
           onChangeText={(text) => setReceiver(text)}
           value={receiver}
-          placeholder="Digite o destinatário"
+          className="text-white"
         />
       </View>
-      <View className="flex flex-row justify-between items-center border p-1.5 rounded-lg w-full">
+      <View className="flex border border-zinc-600 flex-row justify-between items-center p-1.5 rounded-lg w-full">
         <TextInput
           onChangeText={(text) => setMessage(text)}
           value={message}
-          placeholder="Digite o destinatário"
+          className="text-white w-5/6"
         />
         <TouchableOpacity onPress={sendMessage}>
           <Ionicons name="play" color="red" size={20} />

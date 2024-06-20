@@ -23,7 +23,6 @@ export function Enter() {
   };
 
   const handleLogin = async () => {
-    console.log(process.env.EXPO_PUBLIC_API_URL);
     try {
       setEmail(email.trim())
       setPassword(password.trim())

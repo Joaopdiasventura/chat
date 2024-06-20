@@ -31,6 +31,7 @@ export function Chats() {
         .get("/chat/firsts/" + email)
         .then((result) => result.data);
       setChats(result);
+      console.log(result);
     } else {
       navigate("Enter" as never);
     }
@@ -54,7 +55,7 @@ export function Chats() {
         <View className="">
           <Text className="font-black color-red-600">Adicionar Conversa</Text>
         </View>
-        <View className="bg-red-600 rounded-full">
+        <View className="bg-red-700 rounded-full">
           <Ionicons name="add" color="white" size={25} />
         </View>
       </TouchableOpacity>
