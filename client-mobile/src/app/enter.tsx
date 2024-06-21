@@ -4,10 +4,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { InputComponent } from "../components/input";
 import { app, useUserContext } from "../contexts";
+import { useSocket } from "../hooks/socket.io";
 
 export function Enter() {
   const { navigate } = useNavigation();
   const { setUser } = useUserContext();
+  const { handleEnter } = useSocket(`${process.env.EXPO_PUBLIC_API_URL}`);
 
   const [login, setLogin] = useState<boolean>(true);
   const [name, setName] = useState("");
@@ -24,8 +26,9 @@ export function Enter() {
 
   const handleLogin = async () => {
     try {
-      setEmail(email.trim())
-      setPassword(password.trim())
+      console.log(process.env.EXPO_PUBLIC_API_URL);
+      setEmail(email.trim());
+      setPassword(password.trim());
       const { token } = await app
         .post("/user/login", { email, password })
         .then((result) => result.data);
@@ -38,9 +41,9 @@ export function Enter() {
 
   const handleRegister = async () => {
     try {
-      setName(name.trim())
-      setEmail(email.trim())
-      setPassword(password.trim())
+      setName(name.trim());
+      setEmail(email.trim());
+      setPassword(password.trim());
       const result = await app
         .post("/user/register", { name, email, password })
         .then((result) => result.data);
@@ -55,6 +58,7 @@ export function Enter() {
       .get(`/user/decode/${token}`)
       .then((result) => result.data);
     setUser(result);
+    handleEnter(email.trim());
     await AsyncStorage.setItem("user", JSON.stringify(result));
     navigate("Chats" as never);
   };
@@ -71,9 +75,7 @@ export function Enter() {
               {!login && (
                 <>
                   <Text className="text-base text-white">Nome:</Text>
-                  <InputComponent
-                    onChangeText={setName}
-                  />
+                  <InputComponent onChangeText={setName} />
                 </>
               )}
               <>
@@ -86,10 +88,7 @@ export function Enter() {
               </>
               <>
                 <Text className="text-base text-white">Senha:</Text>
-                <InputComponent
-                  onChangeText={setPassword}
-                  secureTextEntry
-                />
+                <InputComponent onChangeText={setPassword} secureTextEntry />
               </>
               <View className="flex-row gap-2 mt-1">
                 <TouchableOpacity

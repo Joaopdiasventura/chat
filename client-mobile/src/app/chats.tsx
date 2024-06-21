@@ -4,11 +4,21 @@ import { app, useUserContext } from "../contexts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ChatComponent } from "../components/chat";
 import { useNavigation } from "@react-navigation/native";
+import { useSocket } from "../hooks/socket.io";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export function Chats() {
   const { navigate } = useNavigation();
   const { user, setUser } = useUserContext();
+  const { message } = useSocket(
+    `${process.env.EXPO_PUBLIC_API_URL}`
+  );
+
+  useEffect(() => {
+    if (message) {
+      console.log("New message received:", message);
+    }
+  }, [message]);
 
   const [chats, setChats] = useState<any[]>([]);
 
@@ -24,14 +34,12 @@ export function Chats() {
   };
 
   const getData = async () => {
-    console.log(user);
     if (user) {
       const { email } = user;
       const result = await app
         .get("/chat/firsts/" + email)
         .then((result) => result.data);
       setChats(result);
-      console.log(result);
     } else {
       navigate("Enter" as never);
     }

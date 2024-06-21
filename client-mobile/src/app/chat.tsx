@@ -17,6 +17,7 @@ export function Chat() {
       .get("/message/" + chat)
       .then((result) => result.data);
     setMessages(result);
+    scrollViewRef.current?.scrollToEnd();
   };
 
   const sendMessage = async () => {

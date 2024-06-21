@@ -12,7 +12,7 @@ interface chatProps {
 
 export function ChatComponent(props: chatProps) {
   const { navigate } = useNavigation();
-  const { chat, setChat } = useChatContext();
+  const { setChat } = useChatContext();
 
   const date = new Date(props.sendAt);
 
@@ -29,8 +29,6 @@ export function ChatComponent(props: chatProps) {
 
   const SetChat = () => {
     setChat(props.chat);
-    console.log(chat);
-
     navigate("Chat" as never);
   };
 
