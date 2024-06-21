@@ -8,7 +8,6 @@ import {
   OnGatewayDisconnect,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
-import { Message } from "src/message/entities/message.entity";
 
 @WebSocketGateway()
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -18,15 +17,14 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private users: Map<string, string> = new Map();
 
   @SubscribeMessage("handleMessage")
-  async handleMessage(@MessageBody() payload: Message, to: string) {
-    const recipientSocketId = this.getUserSocketId(to);
+  async handleMessage(@MessageBody() payload: any) {
+    const recipientSocketId = this.getUserSocketId(payload.to);
     if (recipientSocketId) {
       this.server
         .to(recipientSocketId)
         .emit("message", JSON.stringify(payload));
-      console.log(recipientSocketId);
     } else {
-      console.log(`Usuário com o email: ${to} não está conectado`);
+      console.log(`Usuário com o email: ${payload.to} não está conectado`);
     }
   }
 
@@ -43,14 +41,14 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleEnter(
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: { email: string },
-  ): void {
+  ): string {
     const { email } = payload;
     this.users.set(client.id, email);
     this.server.emit(
       "userEntered",
       JSON.stringify({ msg: "Usuário entrou com sucesso" }),
     );
-    console.log(`Usuário com o email: ${email}, entrou`);
+    return `Usuário com o email: ${email}, entrou`;
   }
 
   handleConnection(client: Socket) {

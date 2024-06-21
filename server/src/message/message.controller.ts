@@ -51,7 +51,7 @@ export class MessageController {
     }
     const result = await this.messageService.create(createMessageDto);
 
-    this.socket.handleMessage(result, createMessageDto.user_);
+    this.socket.handleMessage({ ...result, to: createMessageDto.user_ });
     return res.status(201).send(result);
   }
 
