@@ -43,6 +43,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() payload: { email: string },
   ): string {
     const { email } = payload;
+    console.log(email);
     this.users.set(client.id, email);
     this.server.emit(
       "userEntered",
