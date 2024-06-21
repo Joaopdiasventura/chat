@@ -24,6 +24,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server
         .to(recipientSocketId)
         .emit("message", JSON.stringify(payload));
+      console.log(recipientSocketId);
     } else {
       console.log(`Usuário com o email: ${to} não está conectado`);
     }
@@ -42,14 +43,14 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleEnter(
     @ConnectedSocket() client: Socket,
     @MessageBody() payload: { email: string },
-  ): string {
+  ): void {
     const { email } = payload;
     this.users.set(client.id, email);
     this.server.emit(
       "userEntered",
       JSON.stringify({ msg: "Usuário entrou com sucesso" }),
     );
-    return `Usuário com o email: ${email}, entrou`;
+    console.log(`Usuário com o email: ${email}, entrou`);
   }
 
   handleConnection(client: Socket) {
