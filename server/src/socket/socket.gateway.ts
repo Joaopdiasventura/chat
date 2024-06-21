@@ -1,15 +1,21 @@
 import {
-  ConnectedSocket,
-  MessageBody,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  SubscribeMessage,
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: process.env.FRONTEND,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+})
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -43,7 +49,6 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() payload: { email: string },
   ): string {
     const { email } = payload;
-    console.log(email);
     this.users.set(client.id, email);
     this.server.emit(
       "userEntered",
