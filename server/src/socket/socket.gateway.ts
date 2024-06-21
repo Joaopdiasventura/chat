@@ -17,7 +17,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   private users: Map<string, string> = new Map();
 
-  @SubscribeMessage("enter")
+  @SubscribeMessage("handleMessage")
   async handleMessage(@MessageBody() payload: Message, to: string) {
     const recipientSocketId = this.getUserSocketId(to);
     if (recipientSocketId) {
